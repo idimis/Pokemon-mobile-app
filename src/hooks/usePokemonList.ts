@@ -19,7 +19,7 @@ const usePokemonList = (limit: number, offset: number) => {
             try {
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
                 const pokemonData = await Promise.all(
-                    response.data.results.map(async (pokemon: any, index: number) => {
+                    response.data.results.map(async (pokemon: any) => {
                         const details = await axios.get(pokemon.url);
                         return {
                             id: details.data.id,

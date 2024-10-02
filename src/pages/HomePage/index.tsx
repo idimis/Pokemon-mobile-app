@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// HomePage.tsx
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../../components/Card';
 import SortMenu from '../../components/SortMenu';
@@ -6,9 +7,13 @@ import GridMenu from '../../components/GridMenu';
 import { usePokemonContext } from '../../context/PokemonContext';
 
 const HomePage: React.FC = () => {
-    const { pokemons, loading } = usePokemonContext(); // Ambil data dari context
+    const { pokemons, loading } = usePokemonContext(); // Ensure this is within a valid provider
     const [sortOrder, setSortOrder] = useState<string>('asc');
     const [view, setView] = useState<string>('grid');
+
+    useEffect(() => {
+        console.log('Pokémons fetched:', pokemons);
+    }, [pokemons]);
 
     // Sort Pokémon based on the selected order
     const sortedPokemons = [...pokemons].sort((a, b) => {

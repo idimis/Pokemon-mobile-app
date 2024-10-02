@@ -1,25 +1,46 @@
-import { createContext, useContext } from 'react';
+// PokemonContext.tsx
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface Pokemon {
-    id: number;
     name: string;
-    artworkFront: string; // Include any other properties as needed
+    // Add other properties as necessary
 }
 
 interface PokemonContextType {
-    pokemons: Pokemon[]; // Ensure 'pokemons' is defined here
+    pokemons: Pokemon[];
     loading: boolean;
-    error: string | null; // Add if needed
 }
 
 const PokemonContext = createContext<PokemonContextType | undefined>(undefined);
 
-export const usePokemonContext = () => {
+export const PokemonProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPokemons = async () => {
+            setLoading(true);
+            // Fetch your Pokémon data here
+            const response = await fetch('your-api-url');
+            const data = await response.json();
+            setPokemons(data.results); // Adjust according to your API response
+            setLoading(false);
+        };
+
+        fetchPokemons();
+    }, []);
+
+    return (
+        <PokemonContext.Provider value={{ pokemons, loading }}>
+            {children}
+        </PokemonContext.Provider>
+    );
+};
+
+export const usePokemonContext = (): PokemonContextType => {
     const context = useContext(PokemonContext);
-    if (!context) {
+    if (context === undefined) {
         throw new Error('usePokemonContext must be used within a PokemonProvider');
     }
     return context;
 };
-
-export default PokemonContext;

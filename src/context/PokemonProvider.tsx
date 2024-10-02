@@ -1,40 +1,36 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface Pokemon {
-    id: number;
     name: string;
-    // Add other properties as needed
+    id: number;
+    // Add other necessary properties as needed
 }
 
-interface PokemonContextProps {
-    pokemons: Pokemon[]; // Make sure this matches the context type
+interface PokemonContextType {
+    pokemons: Pokemon[];
     loading: boolean;
 }
 
-const PokemonContext = createContext<PokemonContextProps | undefined>(undefined);
+const PokemonContext = createContext<PokemonContextType | undefined>(undefined);
 
-export const usePokemonContext = () => {
+export const usePokemonContext = (): PokemonContextType => {
     const context = useContext(PokemonContext);
     if (!context) {
-        throw new Error("usePokemonContext must be used within a PokemonProvider");
+        throw new Error('usePokemonContext must be used within a PokemonProvider');
     }
     return context;
 };
 
 export const PokemonProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [pokemons, setPokemons] = useState<Pokemon[]>([]); // Initialize pokemons state
+    const [pokemons, setPokemons] = useState<Pokemon[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchPokemons = async () => {
             try {
-                const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10');
+                const response = await fetch('YOUR_API_URL_HERE'); // Replace with your API URL
                 const data = await response.json();
-                setPokemons(data.results.map((pokemon: any) => ({ 
-                    id: pokemon.id, // Ensure this is the right mapping
-                    name: pokemon.name,
-                    artworkFront: pokemon.sprites.front_default // Example for artwork
-                }))); 
+                setPokemons(data); // Adjust according to your data structure
             } catch (error) {
                 console.error('Error fetching Pokémon:', error);
             } finally {
@@ -44,6 +40,11 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
         fetchPokemons();
     }, []);
+
+    // Log the fetched Pokémon data whenever it changes
+    useEffect(() => {
+        console.log('Pokémons fetched:', pokemons);
+    }, [pokemons]);
 
     return (
         <PokemonContext.Provider value={{ pokemons, loading }}>

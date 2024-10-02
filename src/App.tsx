@@ -1,21 +1,17 @@
 import './App.css'
-// import usePokemonList from './hooks/usePokemonList'
-// import usePokemonDetails from './hooks/usePokemonDetail'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import PokemonDetails from './pages/PokemonDetails';
 
 function App() {
-  // Use the custom hook to fetch pokemon list
-  // Example below
-  // const list = usePokemonList();
-  // const detail = usePokemonDetails("bulbasaur");
-
   return (
-    <div>
-      {/* Start the development here */}
-      {/* Use react-router-dom Expected routes:  */}
-      {/* 1. Home path: "/" */}
-      {/* 1. Details path: "/details:" */}
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/details/:name" element={<PokemonDetails />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

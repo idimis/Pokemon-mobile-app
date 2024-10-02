@@ -1,7 +1,5 @@
-// src/context/PokemonProvider.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Define a type for your Pokémon data
 interface Pokemon {
     id: number;
     name: string;
@@ -9,9 +7,8 @@ interface Pokemon {
 }
 
 interface PokemonContextProps {
-    pokemons: Pokemon[]; // Adjust according to your data structure
+    pokemons: Pokemon[]; // Make sure this matches the context type
     loading: boolean;
-    // Add other context properties or methods as needed
 }
 
 const PokemonContext = createContext<PokemonContextProps | undefined>(undefined);
@@ -25,20 +22,23 @@ export const usePokemonContext = () => {
 };
 
 export const PokemonProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [pokemons, setPokemons] = useState<Pokemon[]>([]); // Adjust initial state
-    const [loading, setLoading] = useState<boolean>(true); // Example loading state
+    const [pokemons, setPokemons] = useState<Pokemon[]>([]); // Initialize pokemons state
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchPokemons = async () => {
             try {
-                // Replace with your actual API call
                 const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10');
                 const data = await response.json();
-                setPokemons(data.results); // Adjust according to your data structure
+                setPokemons(data.results.map((pokemon: any) => ({ 
+                    id: pokemon.id, // Ensure this is the right mapping
+                    name: pokemon.name,
+                    artworkFront: pokemon.sprites.front_default // Example for artwork
+                }))); 
             } catch (error) {
                 console.error('Error fetching Pokémon:', error);
             } finally {
-                setLoading(false); // Set loading to false after fetching data
+                setLoading(false);
             }
         };
 

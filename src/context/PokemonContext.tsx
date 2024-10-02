@@ -1,16 +1,15 @@
-// src/context/PokemonContext.tsx
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 interface Pokemon {
     id: number;
     name: string;
-    artworkFront: string;
+    artworkFront: string; // Include any other properties as needed
 }
 
 interface PokemonContextType {
-    pokemonList: Pokemon[];
+    pokemons: Pokemon[]; // Ensure 'pokemons' is defined here
     loading: boolean;
-    error: string | null;
+    error: string | null; // Add if needed
 }
 
 const PokemonContext = createContext<PokemonContextType | undefined>(undefined);

@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { usePokemonList } from '../../hooks/usePokemonList'; // Adjusted import path
-import Card from '../../components/Card';                   // Adjusted import path
-import SortMenu from '../../components/SortMenu';           // Adjusted import path
-import GridMenu from '../../components/GridMenu';           // Adjusted import path
+import Card from '../../components/Card';
+import SortMenu from '../../components/SortMenu';
+import GridMenu from '../../components/GridMenu';
 import { usePokemonContext } from '../../context/PokemonContext';
 
 const HomePage: React.FC = () => {
-    const { view, setView } = usePokemonContext();
+    const { pokemons, loading } = usePokemonContext(); // Ambil data dari context
     const [sortOrder, setSortOrder] = useState<string>('asc');
-    const [offset, setOffset] = useState(0);
-    const { pokemons, loading, error } = usePokemonList(10, offset);
+    const [view, setView] = useState<string>('grid');
 
     // Sort Pokémon based on the selected order
     const sortedPokemons = [...pokemons].sort((a, b) => {
@@ -32,7 +30,6 @@ const HomePage: React.FC = () => {
     };
 
     if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
 
     return (
         <div className="p-4">

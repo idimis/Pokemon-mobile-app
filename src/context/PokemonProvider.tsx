@@ -1,48 +1,53 @@
 // src/context/PokemonProvider.tsx
-import React, { ReactNode, useEffect, useState } from 'react';
-import axios from 'axios';
-import PokemonContext from './PokemonContext';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
+// Define a type for your Pokémon data
 interface Pokemon {
     id: number;
     name: string;
-    artworkFront: string;
+    // Add other properties as needed
 }
 
-interface PokemonProviderProps {
-    children: ReactNode;
+interface PokemonContextProps {
+    pokemons: Pokemon[]; // Adjust according to your data structure
+    loading: boolean;
+    // Add other context properties or methods as needed
 }
 
-const PokemonProvider: React.FC<PokemonProviderProps> = ({ children }) => {
-    const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+const PokemonContext = createContext<PokemonContextProps | undefined>(undefined);
+
+export const usePokemonContext = () => {
+    const context = useContext(PokemonContext);
+    if (!context) {
+        throw new Error("usePokemonContext must be used within a PokemonProvider");
+    }
+    return context;
+};
+
+export const PokemonProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [pokemons, setPokemons] = useState<Pokemon[]>([]); // Adjust initial state
+    const [loading, setLoading] = useState<boolean>(true); // Example loading state
 
     useEffect(() => {
-        const fetchPokemonList = async () => {
+        const fetchPokemons = async () => {
             try {
-                const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=100');
-                const pokemonData = response.data.results.map((pokemon: any, index: number) => ({
-                    id: index + 1,
-                    name: pokemon.name,
-                    artworkFront: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`
-                }));
-                setPokemonList(pokemonData);
-            } catch (err) {
-                setError('Failed to load Pokémon list');
+                // Replace with your actual API call
+                const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10');
+                const data = await response.json();
+                setPokemons(data.results); // Adjust according to your data structure
+            } catch (error) {
+                console.error('Error fetching Pokémon:', error);
             } finally {
-                setLoading(false);
+                setLoading(false); // Set loading to false after fetching data
             }
         };
 
-        fetchPokemonList();
+        fetchPokemons();
     }, []);
 
     return (
-        <PokemonContext.Provider value={{ pokemonList, loading, error }}>
+        <PokemonContext.Provider value={{ pokemons, loading }}>
             {children}
         </PokemonContext.Provider>
     );
 };
-
-export default PokemonProvider;

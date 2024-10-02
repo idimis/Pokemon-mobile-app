@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import usePokemonDetail from '../../hooks/usePokemonDetail';
+import usePokemonDetails from '../../hooks/usePokemonDetail';
 
 interface PokemonDetails {
   id: number;
@@ -13,7 +13,7 @@ interface PokemonDetails {
 
 const PokemonDetails: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-  const { pokemonDetails, loading, error } = usePokemonDetail(name || '');
+  const { pokemonDetails, loading, error } = usePokemonDetails(name || '');
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading Pokémon details</div>;

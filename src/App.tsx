@@ -1,17 +1,20 @@
-import './App.css'
+// src/App.tsx
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import PokemonDetails from './pages/PokemonDetails';
+import HomePage from './pages/HomePage';
+import PokeDetailPage from './pages/PokeDetailPage';
+import Header from './components/Header'; // Import Header
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/details/:name" element={<PokemonDetails />} />
-      </Routes>
-    </Router>
-  );
-}
+const App: React.FC = () => {
+    return (
+        <Router>
+            <Header /> {/* Include the header here for navigation */}
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/pokemon/:name" element={<PokeDetailPage />} />
+            </Routes>
+        </Router>
+    );
+};
 
 export default App;

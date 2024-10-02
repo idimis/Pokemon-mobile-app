@@ -1,36 +1,45 @@
-import { useState, useEffect } from 'react';
+// src/hooks/usePokemonList.ts
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 interface Pokemon {
-  name: string;
-  url: string;
+    id: number;
+    name: string;
+    artworkFront: string;
 }
 
-const usePokemonList = () => {
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<unknown>(null);
+const usePokemonList = (limit: number, offset: number) => {
+    const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchPokemonList = async () => {
-      try {
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=20');
-        if (!response.ok) {
-          throw new Error('Failed to fetch Pokémon.');
-        }
-        const data = await response.json();
-        console.log(data);
-        setPokemonList(data.results);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
-    };
+    useEffect(() => {
+        const fetchPokemons = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+                const pokemonData = await Promise.all(
+                    response.data.results.map(async (pokemon: any, index: number) => {
+                        const details = await axios.get(pokemon.url);
+                        return {
+                            id: details.data.id,
+                            name: details.data.name,
+                            artworkFront: details.data.sprites.front_default,
+                        };
+                    })
+                );
+                setPokemons(pokemonData);
+            } catch (err) {
+                setError('Failed to fetch Pokémon data.');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    fetchPokemonList();
-  }, []);
+        fetchPokemons();
+    }, [limit, offset]);
 
-  return { pokemonList, loading, error };
+    return { pokemons, loading, error };
 };
 
-export default usePokemonList;
+export { usePokemonList };

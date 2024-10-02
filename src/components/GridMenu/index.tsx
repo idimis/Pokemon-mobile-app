@@ -1,20 +1,21 @@
 import React from 'react';
-import Card from './Card';
-import usePokemonList from '../hooks/usePokemonList';
 
-const GridMenu = () => {
-  const { pokemonList, loading, error } = usePokemonList();
+interface GridMenuProps {
+    onGridView: () => void;
+    onListView: () => void;
+}
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error loading Pokémon</div>;
-
-  return (
-    <div className="grid-menu">
-      {pokemonList.map((pokemon) => (
-        <Card key={pokemon.name} name={pokemon.name} />
-      ))}
-    </div>
-  );
+const GridMenu: React.FC<GridMenuProps> = ({ onGridView, onListView }) => {
+    return (
+        <div className="flex justify-center mb-4">
+            <button onClick={onGridView} className="bg-blue-500 text-white py-2 px-4 rounded-l">
+                Grid View
+            </button>
+            <button onClick={onListView} className="bg-blue-500 text-white py-2 px-4 rounded-r">
+                List View
+            </button>
+        </div>
+    );
 };
 
 export default GridMenu;

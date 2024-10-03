@@ -1,26 +1,21 @@
-// HomePage.tsx
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Card from '../../components/Card';
-import SortMenu from '../../components/SortMenu';
-import GridMenu from '../../components/GridMenu';
-import { usePokemonContext } from '../../context/PokemonContext';
+// src/pages/HomePage/index.tsx
+
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // Pastikan ini diimpor jika menggunakan Link
+import { usePokemonContext } from '../../context/PokemonContext'; // Ganti dengan path yang benar
+import SortMenu from '../../components/SortMenu'; // Ganti dengan path yang benar
+import GridMenu from '../../components/GridMenu'; // Ganti dengan path yang benar
+import Card from '../../components/Card'; // Ganti dengan path yang benar
 
 const HomePage: React.FC = () => {
-    const { pokemons, loading } = usePokemonContext(); // Ensure this is within a valid provider
+    const { pokemons, loading } = usePokemonContext(); 
     const [sortOrder, setSortOrder] = useState<string>('asc');
     const [view, setView] = useState<string>('grid');
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         console.log('Pokémons fetched:', pokemons);
     }, [pokemons]);
-
-    // Sort Pokémon based on the selected order
-    const sortedPokemons = [...pokemons].sort((a, b) => {
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        return sortOrder === 'asc' ? (nameA > nameB ? 1 : -1) : (nameA < nameB ? 1 : -1);
-    });
 
     const handleSort = (order: string) => {
         setSortOrder(order);
@@ -35,6 +30,13 @@ const HomePage: React.FC = () => {
     };
 
     if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+
+    // Assuming sortedPokemons is derived from pokemons based on sortOrder
+    const sortedPokemons = [...pokemons].sort((a, b) => {
+        if (sortOrder === 'asc') return a.name.localeCompare(b.name);
+        return b.name.localeCompare(a.name);
+    });
 
     return (
         <div className="p-4">
@@ -44,7 +46,7 @@ const HomePage: React.FC = () => {
             <div className={`grid ${view === 'grid' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-1'}`}>
                 {sortedPokemons.map((pokemon) => (
                     <Link key={pokemon.name} to={`/pokemon/${pokemon.name}`}>
-                        <Card name={pokemon.name} imageUrl={`https://img.pokemondb.net/artwork/large/${pokemon.name}.jpg`} />
+                        <Card name={pokemon.name} imageUrl={pokemon.artworkFront} />
                     </Link>
                 ))}
             </div>
@@ -52,4 +54,5 @@ const HomePage: React.FC = () => {
     );
 };
 
+// Pastikan untuk mengekspor default
 export default HomePage;

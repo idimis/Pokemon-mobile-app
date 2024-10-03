@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 interface Pokemon {
     name: string;
     id: number;
-    // Add other necessary properties as needed
+   
 }
 
 interface PokemonContextType {
@@ -28,9 +28,9 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode }> = ({ child
     useEffect(() => {
         const fetchPokemons = async () => {
             try {
-                const response = await fetch('YOUR_API_URL_HERE'); // Replace with your API URL
+                const response = await fetch('YOUR_API_URL_HERE'); 
                 const data = await response.json();
-                setPokemons(data); // Adjust according to your data structure
+                setPokemons(data); 
             } catch (error) {
                 console.error('Error fetching Pokémon:', error);
             } finally {
@@ -41,7 +41,7 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode }> = ({ child
         fetchPokemons();
     }, []);
 
-    // Log the fetched Pokémon data whenever it changes
+
     useEffect(() => {
         console.log('Pokémons fetched:', pokemons);
     }, [pokemons]);

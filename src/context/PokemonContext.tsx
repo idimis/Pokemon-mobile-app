@@ -1,15 +1,5 @@
-// PokemonContext.tsx
-import React, { createContext, useContext, useState, useEffect } from 'react';
-
-interface Pokemon {
-    name: string;
-    // Add other properties as necessary
-}
-
-interface PokemonContextType {
-    pokemons: Pokemon[];
-    loading: boolean;
-}
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { fetchPokemons } from '../api/pokemonAPI'; // Import your API functions
 
 const PokemonContext = createContext<PokemonContextType | undefined>(undefined);
 
@@ -18,16 +8,18 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchPokemons = async () => {
-            setLoading(true);
-            // Fetch your Pokémon data here
-            const response = await fetch('your-api-url');
-            const data = await response.json();
-            setPokemons(data.results); // Adjust according to your API response
-            setLoading(false);
+        const fetchPokemonsData = async () => {
+            try {
+                const data = await fetchPokemons();
+                setPokemons(data);
+            } catch (error) {
+                console.error('Error fetching Pokémon:', error);
+            } finally {
+                setLoading(false);
+            }
         };
 
-        fetchPokemons();
+        fetchPokemonsData();
     }, []);
 
     return (

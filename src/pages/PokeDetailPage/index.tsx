@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import usePokemonDetails from '../../hooks/usePokemonDetail';
+import logo from '../../assets/logo.png'; // Adjust the path as necessary
 
 interface PokemonDetails {
   id: number;
@@ -21,20 +22,24 @@ const PokemonDetails: React.FC = () => {
   if (!pokemonDetails) return <div>No Pokémon details available</div>;
 
   return (
-    <div style={{ color: '#fff', padding: '20px', backgroundColor: '#333' }}>
-      <header>
-        <img src="/assets/images/pokemon-logo.png" alt="Pokemon Logo" />
+    <div className="p-2" style={{ backgroundColor: '#252A3E', maxWidth: '320px', height: '568px', margin: '0 auto', overflowY: 'auto', borderRadius: '5px' }}>
+      <header className="flex justify-center mb-2">
+        <img src={logo} alt="Pokémon Logo" className="w-14 h-auto" /> {/* Logo */}
       </header>
-      <div>
-        <p>Serial Code: #{pokemonDetails.id}</p>
-        <img src={pokemonDetails.artworkFront} alt={pokemonDetails.name} />
-        <h2>{pokemonDetails.name}</h2>
-        <div className="details-box" style={{ backgroundColor: '#000', padding: '10px' }}>
-          <label>Health: </label>
-          <input type="range" min="0" max="1000" value={pokemonDetails.health} readOnly />
-          <p>Attack: {pokemonDetails.attack}</p>
-          <p>Defense: {pokemonDetails.defense}</p>
+      <div className="text-center mb-4">
+        <p style={{ fontSize: '12px', color: '#fff' }}>Serial Code: #{pokemonDetails.id}</p> {/* Ukuran teks lebih kecil */}
+        <div className="flex justify-center">
+          <img src={pokemonDetails.artworkFront} alt={pokemonDetails.name} style={{ width: '80px', height: 'auto', border: '2px solid white', borderRadius: '5px', padding: '5px', backgroundColor: 'white' }} /> {/* Frame putih */}
         </div>
+        <h2 className="text-lg font-bold" style={{ fontSize: '16px', color: '#fff' }}>{pokemonDetails.name}</h2> {/* Ukuran teks judul */}
+      </div>
+      <div className="details-box" style={{ backgroundColor: '#000', padding: '8px', borderRadius: '5px', fontSize: '12px', color: '#fff', marginBottom: '10px' }}> {/* Ukuran teks detail lebih kecil */}
+        <label>Health: </label>
+        <div style={{ marginBottom: '10px', width: '100%', borderRadius: '5px', overflow: 'hidden' }}>
+          <div style={{ width: `${pokemonDetails.health / 10}%`, backgroundColor: '#4CAF50', height: '10px', borderRadius: '5px' }} /> {/* Health bar */}
+        </div>
+        <p style={{ margin: '0' }}>Attack: {pokemonDetails.attack}</p>
+        <p style={{ margin: '0' }}>Defense: {pokemonDetails.defense}</p>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
-// src/reducers.ts
+
 import { combineReducers } from 'redux';
 
-// Example of a simple reducer
+
 const initialState = {
     pokemons: [],
     loading: false,
@@ -20,7 +20,7 @@ const pokemonReducer = (state = initialState, action: any) => {
 
 const rootReducer = combineReducers({
     pokemon: pokemonReducer,
-    // Add other reducers here if you have them
+    
 });
 
 export default rootReducer;

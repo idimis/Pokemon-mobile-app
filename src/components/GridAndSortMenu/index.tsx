@@ -61,7 +61,7 @@ const GridAndSortMenu: React.FC<GridAndSortMenuProps> = ({ isSingleImageView, on
                     <img
                         src={isSingleImageView ? one_grid : two_grid}
                         alt={isSingleImageView ? "Single View" : "Two Views"}
-                        className="w-21 h-21 mr-1" // Ukuran gambar diperbesar 1.5x
+                        className="w-21 h-21 mr-1" 
                     />
                 </button>
             </div>

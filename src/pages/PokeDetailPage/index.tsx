@@ -47,7 +47,7 @@ const PokemonDetails: React.FC = () => {
                     <img 
                         src={pokemonDetails.artworkFront} 
                         alt={pokemonDetails.name} 
-                        className="w-16 h-auto border-2 border-white rounded" 
+                        className="w-16 h-auto border-2 border-white rounded" // Thumbnail kecil
                     />
                 </div>
             </div>

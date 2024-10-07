@@ -8,7 +8,7 @@ const Header: React.FC<{ searchTerm: string; setSearchTerm: (term: string) => vo
             <div className="flex items-center">
                 <img src={logo} alt="Pokémon Logo" className="w-24 h-auto" />
             </div>
-            <div className="flex items-center border rounded px-1">
+            <div className="flex items-center">
                 <input
                     type="text"
                     placeholder="Search"

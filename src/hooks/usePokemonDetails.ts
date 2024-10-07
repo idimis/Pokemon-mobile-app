@@ -32,7 +32,7 @@ const usePokemonDetails = (limit: number, offset: number) => {
                         return {
                             id: details.data.id,
                             name: details.data.name,
-                            artworkFront: details.data.sprites.other['official-artwork'].front_default, // Use higher quality artwork
+                            artworkFront: details.data.sprites.other['official-artwork'].front_default,
                         };
                     })
                 );

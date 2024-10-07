@@ -11,7 +11,7 @@ export const fetchPokemons = async (limit: number = 10, offset: number = 0) => {
         return {
             id: detailResponse.id,
             name: detailResponse.name,
-            artworkFront: detailResponse.sprites.front_default, 
+            artworkFront: detailResponse.sprites.other['official-artwork'].front_default, 
         };
     }));
 

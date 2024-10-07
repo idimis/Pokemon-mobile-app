@@ -4,7 +4,7 @@ interface CardProps {
     name: string;
     imageUrl: string;
     code: string; 
-    type: string; 
+    type?: string; 
 }
 
 const Card: React.FC<CardProps> = ({ name, imageUrl, code, type }) => {
@@ -24,14 +24,16 @@ const Card: React.FC<CardProps> = ({ name, imageUrl, code, type }) => {
                 src={imageUrl} 
                 alt={name} 
                 style={{ 
-                    width: '100px', 
-                    height: '100px', 
+                    maxWidth: '100%', 
+                    height: 'auto', 
                     display: 'block', 
-                    margin: '0 auto' 
+                    margin: '0 auto', 
+                    objectFit: 'contain' 
                 }} 
+                loading="lazy" 
             />
             <h3 className="text-sm font-semibold mt-1">{name}</h3>
-            <span className="text-xs text-gray-500">{type}</span> 
+            {type && <span className="text-xs text-gray-500">{type}</span>} 
         </div>
     );
 };

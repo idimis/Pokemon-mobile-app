@@ -21,7 +21,6 @@ const usePokemonDetails = (limit: number, offset: number) => {
     const [error, setError] = useState<string | null>(null);
     const [fetchingDetails, setFetchingDetails] = useState<boolean>(false); 
 
-    
     useEffect(() => {
         const fetchPokemons = async () => {
             setLoading(true);
@@ -33,7 +32,7 @@ const usePokemonDetails = (limit: number, offset: number) => {
                         return {
                             id: details.data.id,
                             name: details.data.name,
-                            artworkFront: details.data.sprites.front_default,
+                            artworkFront: details.data.sprites.other['official-artwork'].front_default, // Use higher quality artwork
                         };
                     })
                 );
@@ -48,12 +47,8 @@ const usePokemonDetails = (limit: number, offset: number) => {
         fetchPokemons();
     }, [limit, offset]);
 
-    
     const fetchPokemonDetails = async (pokemonName: string) => {
-        
         if (fetchingDetails) return;
-
-       
         if (pokemonDetails && pokemonDetails.name === pokemonName) return;
 
         setFetchingDetails(true); 
